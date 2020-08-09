@@ -2,7 +2,7 @@
 /// 16/07/2020
 
 /*
---Description : store elements with pointers for linkage
+--Description : store elements with pointer(s) for linkage
 --Operations wiht Time complexity : pushFront O(1) - popFront O(1) - pushBack O(1) - 
                                     popBack O(n) single pointer or O(1) double pointer - 
                                     addAfter O(1) - addBefore O(n) single pointer or O(1) double pointer - 
