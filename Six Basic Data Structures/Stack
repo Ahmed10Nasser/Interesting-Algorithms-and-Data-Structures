@@ -2,7 +2,7 @@
 /// 16/07/2020
 
 /*
---Description : store elements with FIFO method (First In First Out)
+--Description : store elements with LIFO method (Last In First Out)
 --Operations wiht Time complexity : Push O(1) - Pop O(1)
 */
 
