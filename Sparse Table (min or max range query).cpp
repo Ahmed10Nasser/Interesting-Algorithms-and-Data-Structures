@@ -5,7 +5,7 @@
 --Problem description : answering min/max range queries in a given sequence
 --Solution : use logarithmic base 2 function to build the a N*log(N) table, then answering in O(1)
 --Time complexity : O(nlog(n)) for preprocessing and O(1) for answering a query
-*
+*/
 
 #include<bits/stdc++.h>
 #define FIO ios_base::sync_with_stdio(0);cin.tie(0);
