@@ -4,7 +4,7 @@
 /*
 --Problem description : find the maximum flow from a source node to a target node
 --Solution : 1- use BFS to get the shortest path from source to target in terms of the number of edges
-             2- find the minimum weight through the shortest path
+             2- find the minimum weight through the shortest path and add it to the flow value
              3- update the graph by subtracting the minimum weight from all same-direction path edges
                 and adding the minimum weight from all opposite-direction path edges
              4- repeat until there is no path from the source to the target
