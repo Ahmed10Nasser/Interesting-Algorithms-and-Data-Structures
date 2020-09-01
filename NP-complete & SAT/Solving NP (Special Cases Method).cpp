@@ -5,8 +5,8 @@
 --Problem description : solve NP problem by special cases method. this problem is 2-SAT and solved by implication graph
 --Solution :  1- construct the implication graph 
               2- construct the strongly connected components of the implication graph
- 3- If there is a SCC containing a variable an its negation, so the problem is unsatisfiable
-4- else, assign ones to SCC in topological order, and zero to its negation SCCs
+              3- If there is a SCC containing a variable an its negation, so the problem is unsatisfiable
+              4- else, assign ones to SCC in topological order, and zero to its negation SCCs
 --Time complexity : O(V+E)
 */
 
