@@ -1,8 +1,9 @@
 /// Ahmed Nasser Mohamed
-/// 27/03/2020
+/// 31/08/2020
 
 /*
---Problem description : Find the minimum cost to visit all n nodes traveling from one to another.
+--Problem description : Solving NP problem by exact method. this problem is Traveling Salesman Problem (TSP)
+                        which is to find the minimum cost to visit all n nodes traveling from one to another.
 --Solution :  1- Use Floyed algorithm to calculate the shortest paths between each node and all other nodes.
               2- Use DP with masks (Dynamic Programming) with minimization concept to find the minimum cost between all possible paths combinations. 
 --Time complexity : O((2^n) * (n^2))
