@@ -16,11 +16,11 @@ int const N=100+5, M=1e5+5, OO = 0x3f3f3f3f;
 int n,m,q,u,v,w;
 vector<vector<int>> mat;
 
-void floyd()
+void floyed()
 {
-    for(int u=0; u<n; u++)
-        for(int v=0; v<n; v++)
-            for(int k=0; k<n; k++)
+    for(int k=1; k<=n; k++)
+        for(int u=1; u<=n; u++)
+            for(int v=1; v<=n; v++)
                 mat[u][v]=min(mat[u][v],mat[u][k]+mat[k][v]);
 }
 
@@ -40,7 +40,7 @@ int main()
         mat[u][v]=min(w,mat[u][v]);
         mat[v][u]=min(w,mat[v][u]);
     }
-    floyd();
+    floyed();
     while(q--)
     {
         scanf("%d %d",&u, &v);
