@@ -19,10 +19,10 @@ int mat[N][N];
 
 void floyed()
 {
-    for(int u=0; u<n; u++)
+    for(int k=0; k<n; k++)
+      for(int u=0; u<n; u++)
         for(int v=0; v<n; v++)
-            for(int k=0; k<n; k++)
-                mat[u][v]=min(mat[u][v],mat[u][k]+mat[k][v]);
+          mat[u][v]=min(mat[u][v],mat[u][k]+mat[k][v]);
 }
 
 int mem[N][M];
