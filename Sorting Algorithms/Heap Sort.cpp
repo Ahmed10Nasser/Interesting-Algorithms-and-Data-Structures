@@ -30,7 +30,7 @@ void heapSort(vector<int>& arr){
   for(int i=arr.size()/2-1; i>=0; i--)
     siftDown(i,heapSz,arr);
 
-  // Sort by poping the min each time
+  // Sort by poping the max each time
   for(int i=0; i<arr.size()-1; i++){
     swap(arr[--heapSz],arr[0]);
     siftDown(0,heapSz,arr);
