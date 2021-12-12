@@ -34,12 +34,12 @@ void mergeSort(int l, int r, vector<int>& arr){
 }
  
 int main(){
-int n;
-cin>>n;
-vector<int>arr(n);
-for(int &x : arr) cin>>x;
-mergeSort(0,n-1,arr);
-for(int x : arr) cout<<x<<' ';
-cout<<'\n';
+  int n;
+  cin>>n;
+  vector<int>arr(n);
+  for(int &x : arr) cin>>x;
+  mergeSort(0,n-1,arr);
+  for(int x : arr) cout<<x<<' ';
+  cout<<'\n';
   return 0;
 }
