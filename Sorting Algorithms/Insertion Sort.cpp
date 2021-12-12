@@ -9,38 +9,27 @@
 */
 
 #include<bits/stdc++.h>
-#define FIO ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
-typedef long long ll;
 
-int const N=2e5+5, M=127+5, MOD=1e9+7, OO=0x3f3f3f3f;
-
-int n;
-int arr[N];
-
-
-
-
-int main()
-{
-//    FIO
-//    freopen("input.txt","rt",stdin);
-//    freopen("output.txt","wt",stdout);
-    scanf("%d",&n);
-    for(int i=0; i<n; i++)
-        scanf("%d",arr+i);
-    for(int i=1; i<n; i++)
-    {
-        int cur=arr[i];
-        int j=i-1;
-        while(j>=0 && arr[j]>cur)
-        {
-            arr[j+1]=arr[j];
-            j--;
-        }
-        arr[j+1]=cur;
+void insertionSort(vector<int>&arr){
+  for(int i=1; i<arr.size(); i++){
+    int cur=arr[i];
+    int j=i-1;
+    while(j>=0 && arr[j]>cur){
+        arr[j+1]=arr[j];
+        j--;
     }
-    for(int i=0; i<n; i++)
-        printf("%d ",arr[i]);
+    arr[j+1]=cur;
+  }
+}
 
+int main(){
+  int n;
+  cin>>n;
+  vector<int>arr(n);
+  for(int& x : arr) cin>>x;
+  insertionSort(arr);
+  for(int x : arr) cout<<x<<' ';
+  cout<<'\n';
+  return 0;
 }
