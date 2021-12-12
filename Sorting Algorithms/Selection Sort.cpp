@@ -9,31 +9,22 @@
 */
 
 #include<bits/stdc++.h>
-#define FIO ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
-typedef long long ll;
 
-int const N=2e5+5, M=1e3+5, MOD=1e9+7, OO=0x3f3f3f3f;
+void selectionSort(vector<int>&arr){
+  for(int i=0; i<arr.size(); i++)
+    for(int j=i+1; j<arr.size(); j++)
+      if(arr[i]>arr[j])
+        swap(arr[i],arr[j]);
+}
 
-int n;
-int arr[N];
-
-int main()
-{
-//    FIO
-//    freopen("input.txt","rt",stdin);
-//    freopen("output.txt","wt",stdout);
-    scanf("%d",&n);
-    for(int i=0; i<n; i++)
-        scanf("%d",arr+i);
-
-    for(int i=0; i<n; i++)
-        for(int j=i+1; j<n; j++)
-            if(arr[i]>arr[j])
-                swap(arr[i],arr[j]);
-
-    for(int i=0; i<n; i++)
-        printf("%d ",arr[i]);
-    puts("");
-    return 0;
+int main(){
+  int n;
+  cin>>n;
+  vector<int>arr(n);
+  for(int& x : arr) cin>>x;
+  selectionSort(arr);
+  for(int x : arr) cout<<x<<' ';
+  cout<<'\n';
+  return 0;
 }
