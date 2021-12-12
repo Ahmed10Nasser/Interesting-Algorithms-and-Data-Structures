@@ -5,8 +5,9 @@
 --Problem description : sort a given sequence of N elements.
 --Solution :  1- Get the frequency (number of occurrences) for each value
               2- For each value from min to max, insert that value as much as their frequency
---Time complexity  : O(N) where N is the number of elements
---Space complexity : O(D) where D is the domain of the elements (max value)
+--Time complexity  : O(D+N) 
+--Space complexity : O(D)
+where N is the number of elements, and D is the domain of the elements (max value)
 */
 
 #include<bits/stdc++.h>
