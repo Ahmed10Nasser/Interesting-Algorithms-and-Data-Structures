@@ -1,5 +1,4 @@
-/// Ahmed Nasser Mohamed
-/// 10/08/2020
+// Ahmed Nasser Mohamed
 
 /*
 --Problem description : find the shortest paths form a node to all other nodes
@@ -9,63 +8,56 @@
 */
 
 #include<bits/stdc++.h>
-#define FIO ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
-typedef long long ll;
 
-int const N=1e5+5, M=1e6+5, MOD=1e9+7, OO=0x3f3f3f3f;
+const int MAX=1e3+1, MAX_DIS=2e6+1;
 
-#define from first.first
-#define to first.second
-#define cost second
+struct Node{
+  int distance=MAX_DIS;
+};
+
+struct Edge{
+  Node* fromNode=NULL;
+  Node* toNode=NULL;
+  int weight=MAX;
+  Edge(Node* _fromNode, Node* _toNode, int _weight) : fromNode(_fromNode), toNode(_toNode), weight(_weight) {}
+};
 
 
-int n,m,u,v,w,s;
-bool hasCycle;
-vector<pair<pair<int,int>,int>>edges;
-vector<int> dis;
-
-void bellman(int src)
-{
-    dis=vector<int>(n+5,OO);
-    dis[src]=0;
-    for(int i=1; i<=n; i++)
-    {
-        bool f=0;
-        for(auto e : edges)
-        {
-            if(dis[e.to]>dis[e.from]+e.cost)
-            {
-                dis[e.to]=dis[e.from]+e.cost;
-                f=1;
-            }
-        }
-        if(!f)
-            break;
-        else if(i==n)
-            hasCycle=1;
+bool Bellman(vector<Edge>& edges, Node* src, int n){
+  bool hasNegCycle=0;
+  src->distance=0;
+  for(int i=1; i<=n; i++){
+    bool isUpdated=0;
+    for(auto& edge : edges){
+      if(edge.toNode->distance > edge.fromNode->distance + edge.weight){
+        edge.toNode->distance = edge.fromNode->distance + edge.weight;
+        isUpdated=1;
+      }
     }
+    if(isUpdated==0) break;
+    else if(i==n) hasNegCycle=1;
+  }
+  return hasNegCycle;
 }
 
+int main(){
+  int n,m,src;
+  cin>>n>>m>>src;
+  src--;
+  vector<Node*>nodes(n);
+  for(auto& node : nodes) node=new Node;
+  vector<Edge>edges;
+  while(m--){
+    int u,v,c;
+    cin>>u>>v>>c;
+    u--,v--;
+    edges.push_back(Edge(nodes[u], nodes[v], c));
+  }
+  
+  bool hasNegCycle=Bellman(edges, nodes[src], n);
+  if(hasNegCycle) cout<<"There is a negative cycle\n";
+  else cout<<"There is no negative cycle\n";
 
-int main()
-{
-//    FIO
-//    freopen("input.txt","rt",stdin);
-//    freopen("output.txt","wt",stdout);
-    scanf("%d %d %d",&n, &m, &s);
-    for(int i=0; i<m; i++)
-    {
-        scanf("%d %d %d",&u, &v, &w);
-        edges.push_back({{u,v},w});
-    }
-    bellman(s);
-    if(hasCycle)
-        puts("There is a negative cycle");
-    else
-    {
-        for(int i=1; i<=n; i++)
-            printf("%d %d\n",i,dis[i]);
-    }
-
+  return 0;
 }
