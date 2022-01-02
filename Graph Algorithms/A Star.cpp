@@ -1,5 +1,4 @@
-/// Ahmed Nasser Mohamed
-/// 14/08/2020
+// Ahmed Nasser Mohamed
 
 /*
 --Problem description : find the shortest paths form a node to a target node
@@ -11,85 +10,83 @@
 */
 
 #include<bits/stdc++.h>
-#define FIO ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
-typedef long long ll;
 
-int const N=1e5+5, M=1e5, MOD=1e9+7, OO=0x3f3f3f3f;
+const int MAX=1e8+1;
 
-#define node    second
-#define Hcost   first.first
-#define cost    first.second
+struct Node;
+struct Edge;
 
+struct Node{
+  int x=0;
+  int y=0;
+  int distance=MAX; 
+  vector<Edge>neighbours={}; 
+  Node(int _x, int _y) : x(_x), y(_y) {}
+};
 
-pair<int,int> xy[N];
-int n,m,u,v,w;
-vector<int>dis;
-vector<pair<int,int>>adj[N];
+struct Edge{
+  double euclidean=0;
+  int weight=0;
+  Node* toNode=NULL;
+  Edge(double _euclidean, int _weight, Node* _toNode) : euclidean(_euclidean), weight(_weight), toNode(_toNode) {}
+  bool operator >(const Edge & e2) const{
+    if(euclidean != e2.euclidean) return euclidean > e2.euclidean;
+    return weight > e2.weight;
+  }
+};
 
+double Euclidean(Node* a, Node* b){
+  return hypot(a->x - b->x, a->y - b->y);
+}
 
-double euclidean(int u, int v)
-{
-    double x1=xy[u].first;
-    double y1=xy[u].second;
-    double x2=xy[v].first;
-    double y2=xy[v].second;
-    return sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)));
+int AStar(Node* src, Node* tar){
+  priority_queue<Edge, vector<Edge>, greater<Edge>>q;
+  src->distance=0;
+  q.push(Edge(Euclidean(src,tar),src->distance,src));
+  while(!q.empty()){
+    Edge tp=q.top();
+    q.pop();
+
+    int soFarWeight=tp.weight; 
+    Node* node=tp.toNode; 
+    if(node==tar) break;
+    if(soFarWeight != node->distance) continue;
+
+    for(auto& edge : node->neighbours){
+      int weight=edge.weight;
+      Node* neighbour=edge.toNode;
+      if(neighbour->distance > soFarWeight+weight){
+        neighbour->distance=soFarWeight+weight;
+        q.push(Edge(Euclidean(neighbour,tar), neighbour->distance, neighbour));
+      }
+    }
+  }
+  return tar->distance;
 }
 
 
-void AStar(int src, int tar)
-{
+int main(){
+  int n,m,src,tar;
+  cin>>n>>m>>src>>tar;
+  src--,tar--;
+  vector<Node*> nodes(n);
+  for(auto& node : nodes){
+    int x,y;
+    cin>>x>>y;
+    node=new Node(x,y);
+  }
+  while(m--){
     int u,v,c;
-    double hc;
-    priority_queue<pair<pair<double,int>,int>,vector<pair<pair<double,int>,int>>,greater<pair<pair<double,int>,int>>>q;
-    dis=vector<int>(n+1,OO);
-    dis[src]=0;
-    q.push({{euclidean(src,tar)+0,0},src});
-    while(!q.empty())
-    {
-        u=q.top().node;
-        c=q.top().cost;
-        q.pop();
-        if(u==tar)
-            return;
-        if(c!=dis[u])
-            continue;
-        for(pair<int,int> p : adj[u])
-        {
-            v=p.first;
-            c=p.second;
-            if(dis[v]>dis[u]+c)
-            {
-                dis[v]=dis[u]+c;
-                q.push({{euclidean(v,tar)+dis[v],dis[v]},v});
-            }
-        }
-    }
-}
+    cin>>u>>v>>c;
+    u--,v--;
+    double euclidean=Euclidean(nodes[u],nodes[v]);
+    nodes[u]->neighbours.push_back(Edge(euclidean,c,nodes[v]));
+    nodes[v]->neighbours.push_back(Edge(euclidean,c,nodes[u]));
+  }
+  int ans=AStar(nodes[src],nodes[tar]);
+  cout<<ans<<'\n';
 
-
-
-int main()
-{
-//    FIO
-//    freopen("input.txt","rt",stdin);
-//    freopen("output.txt","wt",stdout);
-    scanf("%d %d",&n, &m);
-    for(int i=1; i<=n; i++)
-        scanf("%d %d",&xy[i].first,&xy[i].second);
-    for(int i=0; i<m; i++)
-    {
-        scanf("%d %d %d",&u, &v, &w);
-        adj[u].push_back({v,w});
-    }
-    scanf("%d %d",&u, &v);
-    AStar(u,v);
-    if(dis[v]==OO)
-        puts("-1");
-    else
-        printf("%d\n",dis[v]);
-
-
-    return 0;
+  return 0;
+  
 }
