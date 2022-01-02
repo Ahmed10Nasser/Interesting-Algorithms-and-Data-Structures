@@ -3,7 +3,7 @@
 /*
 --Problem description : Find the lowest common ancestor for two nodes in a tree
 --Solution : 1- Use spare table to save the power of 2s ancestors for each node 
-             2- Use binary lifting to the get the kth ancestor for any node
+             2- Use binary lifting to get the kth ancestor for any node
              3- Get LCA using kth ancestor and binary search
 --Time complexity : Preprocessing: O((N+E)*Log(N)), kth ancestor: Log(N), LCA: Log(N) 
 */
