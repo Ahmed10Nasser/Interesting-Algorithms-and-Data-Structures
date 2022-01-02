@@ -1,5 +1,4 @@
-/// Ahmed Nasser Mohamed
-/// 10/08/2020
+// Ahmed Nasser Zaki
 
 /*
 --Problem description : find the shortest paths form all nodes to all nodes
@@ -11,40 +10,32 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int const N=100+5, M=1e5+5, OO = 0x3f3f3f3f;
+const int INF=0x3f3f3f3f;
 
-int n,m,q,u,v,w;
-vector<vector<int>> mat;
+struct Edge{
+  int weight=INF;
+};
 
-void floyed()
-{
-    for(int k=1; k<=n; k++)
-        for(int u=1; u<=n; u++)
-            for(int v=1; v<=n; v++)
-                mat[u][v]=min(mat[u][v],mat[u][k]+mat[k][v]);
+
+void Floyed(vector<vector<Edge>>& edgeMatrix){
+  for(int k=0; k<edgeMatrix.size(); k++)
+    for(int u=0; u<edgeMatrix.size(); u++)
+      for(int v=0; v<edgeMatrix.size(); v++)  
+        edgeMatrix[u][v].weight=min(edgeMatrix[u][v].weight, edgeMatrix[u][k].weight + edgeMatrix[k][v].weight);
 }
 
+int main(){
+  int n,m;
+  cin>>n>>m;
+  vector<vector<Edge>>edgeMatrix(n, vector<Edge>(n));
+  for(int i=0; i<n; i++) edgeMatrix[i][i].weight=0;
+  while(m--){
+    int u,v,c;
+    cin>>u>>v>>c;
+    u--,v--;
+    edgeMatrix[u][v].weight=edgeMatrix[v][u].weight=min(edgeMatrix[u][v].weight, c);
+  }
+  Floyed(edgeMatrix);
 
-
-int main()
-{
-//    freopen("input.txt","rt",stdin);
-//    freopen("output.txt","wt",stdout);
-    scanf("%d %d %d",&n, &m, &q);
-    mat=vector<vector<int>>(n+5,vector<int>(n+5,OO));
-    for(int i=1; i<=n; i++)
-        mat[i][i]=0;
-    for(int i=0; i<m; i++)
-    {
-        scanf("%d %d %d",&u, &v, &w);
-        mat[u][v]=min(w,mat[u][v]);
-        mat[v][u]=min(w,mat[v][u]);
-    }
-    floyed();
-    while(q--)
-    {
-        scanf("%d %d",&u, &v);
-        printf("%d\n",mat[u][v]);
-    }
-
+  return 0;
 }
