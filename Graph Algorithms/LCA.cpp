@@ -1,81 +1,91 @@
+// Ahmed Nasser Zaki
+
+/*
+--Problem description : Find the lowest common ancestor for two nodes in a tree
+--Solution : 1- Use spare table to save the power of 2s ancestors for each node 
+             2- Use binary lifting to the get the kth ancestor for any node
+             3- Get LCA using kth ancestor and binary search
+--Time complexity : Preprocessing: O((N+E)*Log(N)), kth ancestor: Log(N), LCA: Log(N) 
+*/
+
+
 #include<bits/stdc++.h>
-#define FIO ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
-typedef long long ll;
- 
-const int N=2e5+5, M=17+5, MOD=1073741824, OO=0x3f3f3f3f;
-const long double ESP=1e-8;
- 
- 
- 
-int n,m;
-vector<vector<int>>adj,anc;
-vector<int>depth;
- 
- 
-int LOG(int x){
-    return 32-__builtin_clz(x)-1;
+
+
+struct Node{
+  int id=-1;
+  int depth=-1;
+  vector<Node*> neighbours=vector<Node*>();
+  vector<Node*> ancestors=vector<Node*>();
+  Node(int _id) : id(_id) {}
+};
+
+
+int Log(int x){
+  return 31-__builtin_clz(x);
 }
- 
- 
-void DFS(int u){
-    for(int v : adj[u]){
-        depth[v]=depth[u]+1;
-        anc[v][0]=u;
-        for(int i=1; i<m; i++)
-            anc[v][i]=anc[anc[v][i-1]][i-1];
-        DFS(v);
-    }
-}   
- 
- 
-int LCA(int u, int v){
-    if(depth[u]<depth[v]) 
-        swap(u,v);
-    int k=depth[u]-depth[v];
-    for(int i=m-1; i>=0; i--)
-        if(k & (1<<i))
-            u=anc[u][i];
-    if(u==v)
-        return u;
-    for(int i=m-1; i>=0; i--){
-        if(anc[u][i]!=anc[v][i]){
-            u=anc[u][i];
-            v=anc[v][i];
-        }
-    }
-    return anc[u][0];
+
+void DFS(Node* node, Node* par){
+  for(auto& neighbour : node->neighbours){
+    if(neighbour==par) continue;
+    neighbour->depth=node->depth+1;
+    neighbour->ancestors.push_back(node);
+    for(int j=1; (1<<j)<=neighbour->depth; j++)
+      neighbour->ancestors.push_back(neighbour->ancestors[j-1]->ancestors[j-1]);
+    DFS(neighbour, node);
+  }
 }
- 
- 
- 
+
+Node* kAnc(Node* node, int k){
+  k=min(k, node->depth);
+  for(int j=0; (1<<j)<=k; j++)
+    if(k & (1<<j))
+      node=node->ancestors[j];
+  return node;
+}
+
+Node* LCA(Node* u, Node* v){
+  if(u->depth < v->depth) swap(u,v);
+  int d=u->depth - v->depth;
+  u=kAnc(u,d);
+
+  if(u==v) return u;
+
+  int m=Log(u->depth);
+  for(int j=m; j>=0; j--){
+    if(u->ancestors[j]!=v->ancestors[j]){
+      u=u->ancestors[j];
+      v=v->ancestors[j];
+    }
+  }
+  return u->ancestors[0];
+}
+
 int main(){
-    FIO
-//    freopen("mahdi.in","rt",stdin);
-//    freopen("output.txt","wt",stdout);
-    cin>>n;
-    m=LOG(n)+1;
-    adj.resize(n);
-    depth.resize(n);
-    anc=vector<vector<int>>(n,vector<int>(m));
-    for(int i=0; i<n; i++){
-        int k,u;
-        cin>>k;
-        while(k--){
-            cin>>u;
-            adj[i].push_back(u);
-        }
-    }
-    DFS(0);
-    int q;
-    cin>>q;
-    while(q--){
-        int u,v;
-        cin>>u>>v;
-        cout<<LCA(u,v)<<'\n';
-    }
- 
- 
-    return 0;
- 
+  int n;
+  cin>>n;
+  vector<Node*>nodes(n);
+  for(int i=0; i<n; i++) nodes[i]=new Node(i);
+  for(auto& node : nodes){
+    int m;
+    cin>>m;
+    while(m--){
+      int child;
+      cin>>child;
+      node->neighbours.push_back(nodes[child]);
+    }  
+  }
+  int root=0;
+  nodes[root]->depth=0;
+  DFS(nodes[root], nodes[root]);
+  int q;
+  cin>>q;
+  while(q--){
+    int u,v;
+    cin>>u>>v;
+    cout<<LCA(nodes[u],nodes[v])->id<<'\n';
+  }
+  
+  return 0;
 }
